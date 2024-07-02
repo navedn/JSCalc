@@ -3,12 +3,14 @@ document.addEventListener("DOMContentLoaded", (event) => {
   let currentInput = "";
   let operator = "";
   let previousInput = "";
+  let operatorPressedLast = false;
 
   const buttons = {
     resetbutton: () => {
       currentInput = "";
       previousInput = "";
       operator = "";
+      operatorPressedLast = false;
       inputBox.textContent = "0";
     },
     modulebutton: () => handleOperator("%"),
@@ -35,20 +37,54 @@ document.addEventListener("DOMContentLoaded", (event) => {
   });
 
   function handleNumber(number) {
+    if (operatorPressedLast) {
+      currentInput = "";
+      operatorPressedLast = false;
+    }
     if (number === "." && currentInput.includes(".")) return;
-    currentInput += number;
+    if (number === "0" && currentInput === "0") return;
+    if (number !== "0" && currentInput === "0" && number !== ".") {
+      currentInput = number;
+    } else {
+      currentInput += number;
+    }
     inputBox.textContent = currentInput;
   }
 
   function handleOperator(op) {
-    if (currentInput === "") return;
+    if (currentInput === "" && previousInput === "") return;
+    if (currentInput === "") return; // Prevent consecutive operators
     if (previousInput !== "") {
       calculateResult();
     }
     operator = op;
     previousInput = currentInput;
     currentInput = "";
+    operatorPressedLast = true;
   }
+
+  document.addEventListener("keydown", (event) => {
+    const key = event.key;
+    if (key >= "0" && key <= "9") {
+      handleNumber(key);
+    } else if (key === ".") {
+      handleNumber(".");
+    } else if (key === "+") {
+      handleOperator("+");
+    } else if (key === "-") {
+      handleOperator("-");
+    } else if (key === "*") {
+      handleOperator("*");
+    } else if (key === "/") {
+      handleOperator("/");
+    } else if (key === "%") {
+      handleOperator("%");
+    } else if (key === "Enter" || key === "=") {
+      calculateResult();
+    } else if (key === "Escape") {
+      buttons["resetbutton"]();
+    }
+  });
 
   function calculateResult() {
     let result;
