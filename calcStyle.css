@@ -13,16 +13,10 @@
 .calculator-window {
   width: 100%;
   max-width: 450px;
-  background: #333333;
-  margin: 40px auto 20px;
+  background: #000000;
+  margin: 120px auto 20px;
   padding: 40px 30px 35px;
   border-radius: 10px;
-}
-.calculator-window h2 {
-  color: #ffffff;
-  display: flex;
-  align-items: center;
-  margin-bottom: 20px;
 }
 .display-row {
   display: flex;
@@ -62,7 +56,7 @@ button {
   margin: 5px;
 }
 button.endbutton {
-  background: #ff9500;
+  background: #ff6600;
   color: #ffffff;
 }
 button.function {
